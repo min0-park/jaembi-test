@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>잼비 재테크 유형 테스트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #1D9E75;
+    --green-dark: #0F6E56;
+    --green-light: #E1F5EE;
+    --green-text: #085041;
+    --coral: #D85A30;
+    --coral-light: #FAECE7;
+    --coral-text: #4A1B0C;
+    --purple: #534AB7;
+    --purple-light: #EEEDFE;
+    --blue: #185FA5;
+    --bg: #FAFAF7;
+    --card: #FFFFFF;
+    --border: rgba(0,0,0,0.09);
+    --text: #1a1a18;
+    --text-sub: #6b6b65;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 520px;
+  }
+
+  /* Header */
+  .site-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .site-header .logo {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  /* Card */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 2rem 1.75rem;
+  }
+
+  /* Intro */
+  .intro-emoji { font-size: 48px; text-align: center; margin-bottom: 1rem; }
+  .intro-title { font-size: 22px; font-weight: 700; text-align: center; margin-bottom: 10px; line-height: 1.35; }
+  .intro-desc { font-size: 14px; color: var(--text-sub); text-align: center; line-height: 1.75; margin-bottom: 1.75rem; }
+  .cat-pills { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 1.75rem; }
+  .cat-pill {
+    font-size: 12px; font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--green-light);
+    color: var(--green-text);
+  }
+  .cat-pill:nth-child(2) { background: var(--purple-light); color: #26215C; }
+  .cat-pill:nth-child(3) { background: var(--coral-light); color: var(--coral-text); }
+  .cat-pill:nth-child(4) { background: #E6F1FB; color: #042C53; }
+
+  /* Button */
+  .btn-primary {
+    width: 100%;
+    padding: 15px;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .btn-primary:hover { background: var(--green-dark); }
+  .btn-primary:active { transform: scale(0.98); }
+
+  /* Progress */
+  .progress-area { margin-bottom: 1.5rem; }
+  .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-cat { font-size: 13px; font-weight: 500; color: var(--green); }
+  .progress-count { font-size: 13px; color: var(--text-sub); }
+  .progress-bar { height: 5px; background: #e8e8e3; border-radius: 3px; }
+  .progress-fill { height: 5px; background: var(--green); border-radius: 3px; transition: width 0.35s ease; }
+
+  /* Question */
+  .q-text {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    min-height: 80px;
+  }
+
+  .ans-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .ans-btn {
+    padding: 18px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    font-size: 17px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--text);
+  }
+  .ans-btn:hover { border-color: #aaa; background: var(--bg); }
+  .ans-btn:active { transform: scale(0.97); }
+  .ans-btn.yes:hover { border-color: var(--green); background: var(--green-light); color: var(--green-text); }
+  .ans-btn.no:hover  { border-color: var(--coral); background: var(--coral-light); color: var(--coral-text); }
+  .ans-label { font-size: 13px; font-weight: 400; }
+
+  /* Result */
+  .result-emoji { font-size: 44px; text-align: center; margin-bottom: 10px; }
+  .result-name { font-size: 22px; font-weight: 700; text-align: center; margin-bottom: 6px; }
+  .result-tag { font-size: 14px; color: var(--text-sub); text-align: center; margin-bottom: 1.25rem; }
+
+  .badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .badge {
+    font-size: 12px; font-weight: 500;
+    padding: 5px 12px; border-radius: 999px;
+  }
+  .badge-best { background: var(--green-light); color: var(--green-text); }
+  .badge-worst { background: var(--coral-light); color: var(--coral-text); }
+
+  .result-desc {
+    font-size: 14px; line-height: 1.8;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+  .score-card {
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+  }
+  .score-label { font-size: 11px; color: var(--text-sub); margin-bottom: 4px; }
+  .score-val { font-size: 20px; font-weight: 700; margin-bottom: 5px; }
+  .score-bar-bg { height: 5px; background: #e8e8e3; border-radius: 3px; }
+  .score-bar-fg { height: 5px; border-radius: 3px; }
+
+  .btn-retry {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    color: var(--text-sub);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-retry:hover { border-color: #aaa; color: var(--text); background: var(--bg); }
+
+  /* Share */
+  .share-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .btn-share {
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--card);
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .btn-share:hover { background: var(--bg); border-color: #aaa; }
+
+  .hidden { display: none; }
+
+  @media (max-width: 480px) {
+    .card { padding: 1.5rem 1.25rem; }
+    .q-text { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header class="site-header">
+    <div class="logo">🐣 잼비 재테크</div>
+  </header>
+
+  <!-- 인트로 -->
+  <div class="card" id="intro-screen">
+    <div class="intro-emoji">💰</div>
+    <div class="intro-title">나의 재테크 유형은?<br>자가진단 테스트</div>
+    <div class="intro-desc">
+      4가지 영역에서 각 5문항, 총 20문항에<br>O / X 로 답하면 나만의 재테크 유형을 알려드려요!
+    </div>
+    <div class="cat-pills">
+      <span class="cat-pill">💚 소비 통제력</span>
+      <span class="cat-pill">💜 수입 확장력</span>
+      <span class="cat-pill">🧡 금융 문해력</span>
+      <span class="cat-pill">💙 투자 실행력</span>
+    </div>
+    <button class="btn-primary" onclick="startTest()">테스트 시작하기 →</button>
+  </div>
+
+  <!-- 문제 -->
+  <div class="card hidden" id="test-screen">
+    <div class="progress-area">
+      <div class="progress-meta">
+        <span class="progress-cat" id="cat-label"></span>
+        <span class="progress-count" id="q-num"></span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="prog" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="q-text" id="q-text"></div>
+    <div class="ans-row">
+      <button class="ans-btn yes" onclick="answer(1)">
+        <span style="font-size:22px">⭕</span>
+        <span class="ans-label">맞아요</span>
+      </button>
+      <button class="ans-btn no" onclick="answer(0)">
+        <span style="font-size:22px">❌</span>
+        <span class="ans-label">아니에요</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 결과 -->
+  <div class="card hidden" id="result-screen"></div>
+</div>
+
+<script>
+const CATS = ['소비 통제력','수입 확장력','금융 문해력','투자 실행력'];
+const EMOJIS = ['💚','💜','🧡','💙'];
+const CAT_COLORS = ['#1D9E75','#534AB7','#D85A30','#185FA5'];
+
+const QS = [
+  '매월 월평균 수입과 고정지출이 총 얼마인지 정확히 파악하고 있나요?',
+  '가계부나 앱 등을 활용해 나의 소비를 꾸준히 기록하고 있나요?',
+  '알뜰폰 요금제나 대중교통 할인 혜택(K-패스 등)을 적극적으로 활용하고 있나요?',
+  '지역사랑상품권 사용 비중을 높여 지출을 통제하고 있나요?',
+  '충동구매를 줄이기 위해 장바구니에 담아 두고 며칠 동안 고민하는 습관이 있나요?',
+  '월급만으로 부족하다고 느끼며 부수입 창출을 시도하고 있나요?',
+  '나의 전문성·취미·재능을 활용해 부수입을 만들고 있나요?',
+  '나에게 해당하는 정부 지원금을 찾아 적극적으로 챙기고 있나요?',
+  '청년 주거 혜택을 알아보고 활용하고 있나요?',
+  '연말정산 공제 항목을 꼼꼼히 챙겨 환급금을 최대화하고 있나요?',
+  '내 월급이나 자산 현황이 또래 평균과 비교해 어느 수준인지 알고 있나요?',
+  '출근길이나 자투리 시간에 경제 기사를 꾸준히 챙겨 보고 있나요?',
+  "경제 기사에 나오는 '금리', '인플레이션' 같은 단어의 의미를 알고 있나요?",
+  '내 신용점수를 확인하고 나에게 맞는 신용카드를 골라 사용하고 있나요?',
+  '금융 공부를 위해 재테크 도서를 끝까지 읽거나 관련 콘텐츠를 찾아보고 있나요?',
+  '1년 이내에 사용할 돈을 파킹통장이나 CMA에 따로 모아 두었나요?',
+  "비과세와 절세 혜택이 있는 '만능 통장' ISA를 개설해 투자하고 있나요?",
+  '노후 준비와 세액공제를 위해 연금저축계좌나 IRP 계좌를 활용하고 있나요?',
+  "감정에 흔들리지 않도록 매달 정해진 날짜에 주식을 사는 '적립식 투자'를 하고 있나요?",
+  '단기적인 수익률에 집착하지 않고 20~30년의 장기적인 관점에서 투자하고 있나요?'
+];
+
+const RESULTS = {
+  '소비 통제력': {
+    '수입 확장력': {emoji:'🛡️', name:'철벽수비형 통장 장인', tag:'새는 돈은 다 막는데, 들어오는 물길이 좁다!', desc:'가계부 작성, 고정비 절감 등 지출 통제는 완벽한 살림꾼이군요! 하지만 월급 외 추가 소득을 만들거나 정부 혜택을 챙기는 적극성은 부족해요. 지출만 줄여서는 목돈을 만드는 데 한계가 있어요. 수비는 충분하니 이제 공격(부업, 재능 마켓 등)을 배울 타이밍입니다.'},
+    '금융 문해력': {emoji:'🐷', name:'무조건 저금통형 자산가', tag:'아끼는 건 자신 있지만, 뉴스는 머리 아파!', desc:'신용카드 없이도 짠테크는 기가 막히게 잘하는데, 경제 뉴스나 환율, 금리 같은 세상 흐름에는 영 관심이 없군요. 돈을 모으는 족족 일반 예·적금에만 넣어 두어 인플레이션에 제대로 대응하지 못하고 있을 가능성이 높습니다. 하루 5분 경제 뉴스레터로 세상 돌아가는 눈을 떠야 합니다.'},
+    '투자 실행력': {emoji:'🏦', name:'원금 사수형 통장 지킴이', tag:'아끼는 건 전국 1등, 주식 계좌 개설은 먼 나라 이야기!', desc:"돈은 잘 모으고 경제 지식도 나쁘지 않지만, '투자'라는 단어만 들으면 가슴이 철렁 내려앉는 안정 제일주의자입니다. 돈의 가치가 녹아내리는 걸 막으려면 안전자산에 분산 투자하거나 절세 혜택이 있는 ISA, 연금저축계좌 개설처럼 아주 작은 첫걸음부터 떼야 합니다."},
+  },
+  '수입 확장력': {
+    '소비 통제력': {emoji:'🕳️', name:'밑 빠진 독에 물 붓는 프로 N잡러', tag:'몸이 부서져라 버는데, 통장은 언제나 리셋!', desc:"당근마켓, 부업, 크몽 등 온갖 파이프라인으로 월급 외 부수입을 기가 막히게 창출하는 능력자입니다. 하지만 버는 만큼 소비를 통제하지 못해 돈이 고이지 않고 그대로 흘러나갑니다. '부업으로 벌었으니 이 정도는 써도 돼'라는 보상 심리를 끄고, 당장 통장 쪼개기부터 시작하세요."},
+    '금융 문해력': {emoji:'🦁', name:'야생의 야망가형 투자자', tag:'돈은 진짜 잘 버는데, 금융 상식은 제로!', desc:'추진력이 좋아 몸으로 부딪쳐 부수입은 척척 잘 만드는데, 정작 거시경제 흐름이나 금융 용어는 잘 모릅니다. 버는 돈의 규모에 비해 금융 지식이 부족하면 누군가의 추천이나 유행만 믿고 덜컥 엉뚱한 곳에 돈을 날릴 위험이 큽니다. 탄탄한 경제 공부가 뒷받침되어야 소중한 자산을 지킬 수 있습니다.'},
+    '투자 실행력': {emoji:'💵', name:'현금만 쌓아두는 부업왕', tag:'버는 재주는 최고, 굴릴 줄은 모르는 현금 부자!', desc:'본업에 부업까지 뛰며 소득의 절대적인 크기를 키우는 데는 성공했습니다. 하지만 그 피 같은 돈을 효율적으로 굴릴 투자 시스템(ETF, ISA 활용 등)은 전혀 구축하지 않고 있네요. 열심히 일해서 번 돈을 잠들지 않게 하려면 적립식 투자 시스템을 구축해야 합니다.'},
+  },
+  '금융 문해력': {
+    '소비 통제력': {emoji:'🧠', name:'지성파 욜로(YOLO) 학자', tag:'경제 흐름은 다 꿰고 있으면서, 소비는 브레이크 댄스!', desc:'금리, 인플레이션, 환율에 대해 친구들에게 설명해 줄 수 있을 정도로 똑똑합니다. 하지만 정작 본인의 충동지출이나 비싼 요금제 같은 고정비 통제에는 완전히 실패한 상태입니다. 머리로만 아는 가치를 내 삶에 적용하려면, 당장 신용카드 사용을 줄이고 체크카드 비중부터 늘려야 합니다.'},
+    '수입 확장력': {emoji:'📋', name:'지식 가득한 외길 월급쟁이', tag:'경제 지식은 완벽, 하지만 수입원은 오직 월급 하나!', desc:"매일 아침 경제 뉴스를 챙겨 보고 시장 지표를 읽는 눈이 훌륭합니다. 소비 통제도 나쁘지 않지만, '월급'이라는 단 하나의 파이프라인에만 의존하고 있네요. 내가 가진 뛰어난 금융 지식을 활용해 잠자는 재능을 깨우거나 정부 지원 혜택을 더 적극적으로 찾아 수입의 한계를 깨부숴야 합니다."},
+    '투자 실행력': {emoji:'📚', name:'방구석 워렌 버핏', tag:'머리는 이미 자산가, 내 주식 계좌는 신생아!', desc:'삼프로TV, 슈카월드를 섭렵하고 재테크 서적도 많이 읽어 시장을 보는 눈은 전문가 뺨칩니다. 하지만 완벽한 타이밍만 기다리다가 정작 실전 투자는 한 주도 못 사고 망설이고 있네요. 백날 공부해도 행동하지 않으면 자산은 변하지 않습니다. 오늘 당장 5,000원짜리 소수점 주식이라도 사며 실전 감각을 익히세요.'},
+  },
+  '투자 실행력': {
+    '소비 통제력': {emoji:'🛒', name:'밑 빠진 독에 투자하기', tag:'앞에서 주식 모으고, 뒤에서 쇼핑으로 지른다!', desc:'ISA, ETF, 적립식 투자, 소수점 투자까지 트렌디한 금융 상품은 다 다룰 줄 알고 실행력도 최고입니다. 문제는 지출 통제가 전혀 안 되어 계좌로 들어가는 돈보다 카드값으로 나가는 돈이 더 크다는 점입니다. 투자 수익률을 높이는 것보다 지출 구멍을 막는 게 자산을 쌓는 가장 빠른 지름길입니다.'},
+    '수입 확장력': {emoji:'🐜', name:'시드 부족한 개미 투자자', tag:'투자는 프로처럼, 시드머니는 먼지만큼!', desc:'분산 투자, 자산 배분, 장기 투자 등 올바른 투자 철학을 가지고 훌륭하게 실천하고 있습니다. 다만 아끼고 모은 적은 돈으로만 투자하다 보니 자산이 불어나는 속도가 너무 더뎌 답답함을 느끼고 있네요. 지금은 투자 스킬을 닦을 때가 아니라, 부업이나 각종 혜택을 통해 투입할 시드머니의 절대적인 크기를 키워야 할 때입니다.'},
+    '금융 문해력': {emoji:'🚂', name:'눈 감고 질주하는 폭주기관차', tag:'남들이 좋다니까 일단 풀매수, 근데 이게 뭐죠?', desc:'계좌 개설, 주식 모으기 등 실행력은 전교 1등인데, 정작 내가 산 ETF나 기업이 무슨 일을 하는지, 지금 거시경제가 어떤 상황인지 전혀 모르는 가장 위험한 유형입니다. 지식 없는 실행은 투자가 아니라 투기입니다. 폭락장에서 멘탈이 터져 손절하기 전에, 아침 뉴스레터 5분 읽기부터 시작해 내 자산을 지킬 최소한의 무기를 장착하세요.'},
+  }
+};
+
+let cur = 0, scores = [0,0,0,0];
+
+function show(id) {
+  ['intro-screen','test-screen','result-screen'].forEach(s => {
+    document.getElementById(s).classList.toggle('hidden', s !== id);
+  });
+}
+
+function startTest() { cur = 0; scores = [0,0,0,0]; show('test-screen'); showQ(); }
+
+function showQ() {
+  const catIdx = Math.floor(cur / 5);
+  document.getElementById('prog').style.width = (cur / 20 * 100) + '%';
+  document.getElementById('cat-label').textContent = EMOJIS[catIdx] + ' ' + CATS[catIdx];
+  document.getElementById('q-num').textContent = (cur + 1) + ' / 20';
+  document.getElementById('q-text').textContent = QS[cur];
+}
+
+function answer(val) {
+  scores[Math.floor(cur / 5)] += val;
+  cur++;
+  if (cur < 20) showQ(); else showResult();
+}
+
+function showResult() {
+  show('result-screen');
+  const maxScore = Math.max(...scores);
+  const minScore = Math.min(...scores);
+  let bestIdx = scores.indexOf(maxScore);
+  let worstIdx = scores.lastIndexOf(minScore);
+  if (bestIdx === worstIdx) worstIdx = (bestIdx + 1) % 4;
+
+  const bestCat = CATS[bestIdx];
+  const worstCat = CATS[worstIdx];
+  const info = RESULTS[bestCat][worstCat];
+
+  const scoreCards = CATS.map((c, i) => {
+    const pct = Math.round(scores[i] / 5 * 100);
+    return `<div class="score-card">
+      <div class="score-label">${EMOJIS[i]} ${c}</div>
+      <div class="score-val" style="color:${CAT_COLORS[i]}">${scores[i]}<span style="font-size:13px;font-weight:400;color:#888"> / 5</span></div>
+      <div class="score-bar-bg"><div class="score-bar-fg" style="width:${pct}%;background:${CAT_COLORS[i]}"></div></div>
+    </div>`;
+  }).join('');
+
+  const resultText = `나의 재테크 유형: ${info.name}\n${info.tag}\n\n${info.desc}`;
+
+  document.getElementById('result-screen').innerHTML = `
+    <div class="result-emoji">${info.emoji}</div>
+    <div class="result-name">${info.name}</div>
+    <div class="result-tag">${info.tag}</div>
+    <div class="badges">
+      <span class="badge badge-best">✅ BEST · ${bestCat}</span>
+      <span class="badge badge-worst">⚠️ WORST · ${worstCat}</span>
+    </div>
+    <div class="result-desc">${info.desc}</div>
+    <div class="score-grid">${scoreCards}</div>
+    <div class="share-row">
+      <button class="btn-share" onclick="copyResult(\`${resultText.replace(/`/g,'\\`')}\`)">📋 결과 복사하기</button>
+      <button class="btn-share" onclick="shareKakao()">💬 공유하기</button>
+    </div>
+    <button class="btn-retry" onclick="startTest()">↩ 다시 테스트하기</button>
+  `;
+}
+
+function copyResult(text) {
+  navigator.clipboard.writeText(text).then(() => alert('결과가 복사되었어요!')).catch(() => alert('복사에 실패했어요.'));
+}
+
+function shareKakao() {
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: '잼비 재테크 유형 테스트', url });
+  } else {
+    navigator.clipboard.writeText(url).then(() => alert('링크가 복사되었어요! 친구에게 공유해보세요 😊'));
+  }
+}
+</script>
+</body>
+</html>
